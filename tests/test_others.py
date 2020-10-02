@@ -17,7 +17,9 @@ PPP_CONSTR_ARGS = os.path.join(test_path, "constraints/input_ppp.yaml")
 LIG_PREP_ARGS = os.path.join(test_path, "preparation/input_space.yaml")
 ENV_ARGS = os.path.join(test_path, "checker/input_env.yaml")
 ATOM_GPCR_ERROR_ARGS = os.path.join(test_path, "gpcr/input_atom_error.yaml")
+MAP_ARGS = os.path.join(test_path, "checker/input_map_atom_str.yaml")
 
+MAPPED = ['atoms": { "ids":["Z:1:_C13"]}']
 
 EXT_CONSTR = [
     '{ "type": "constrainAtomToPosition", "springConstant": 5, "equilibriumDistance": 0.0, "constrainThisAtom": "A:1:_H__" },',
@@ -203,3 +205,9 @@ def test_atom_string_error(yaml=yaml):
         assert str(e).strip("'") == "The specified atom is wrong '157:A:N'. Should be 'chain:resnumber:atomname"
         return
     assert False
+
+def test_atom_string_mapping(ext_args=MAP_ARGS):
+    errors = []
+    job = main.run_platform(ext_args)
+    errors = tk.check_file(job.pele_dir, "pele.conf", MAPPED, errors)
+    assert not errors
