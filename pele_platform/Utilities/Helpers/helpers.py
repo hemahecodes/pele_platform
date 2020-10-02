@@ -233,10 +233,12 @@ def map_atom_string(atom_string, initial_pdb, prep_pdb, logger):
 
     logger.info("Atom {} mapped to {}.".format(before, after))
 
+    return after
 
 def check_atom_string(arg, initial_pdb, preprocessed_pdb, logger):
     
     to_check = []
+    output = []
 
     # reduce the list, if necessary
     if isinstance(arg, list):
@@ -250,6 +252,9 @@ def check_atom_string(arg, initial_pdb, preprocessed_pdb, logger):
         try:
             init_coords = get_coords_from_residue(initial_pdb, j)
             prep_coords = get_coords_from_residue(preprocessed_pdb, j)
+            output.append(j)
         except Exception as e:
             logger.info("{} - mapping it now!".format(e))
-            map_atom_string(j, initial_pdb, preprocessed_pdb, logger)
+            output.append(map_atom_string(j, initial_pdb, preprocessed_pdb, logger))
+
+    return output
