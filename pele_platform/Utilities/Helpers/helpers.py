@@ -199,3 +199,57 @@ def find_nonstd_residue(pdb):
         resnames = list(set([line[17:20] for line in f \
     if line.startswith("ATOM") and line[17:20] not in gv.supported_aminoacids]))
         return resnames
+
+
+def map_atom_string(atom_string, initial_pdb, prep_pdb, logger):
+
+    new_atom = []
+
+    # split the atom string
+    chain, resnum, atom_name = atom_string.split(":")
+
+    # read in user input
+    with open(initial_pdb, "r") as initial:
+        initial_lines = initial.readlines()
+
+    # read in preprocessed input
+    with open(prep_pdb, "r") as prep:
+        prep_lines = prep.readlines()
+
+    # extract coordinates from user input
+    for i in initial_lines:
+        if (i.startswith("HETATM") or i.startswith("ATOM")) and i[21].strip() == chain.strip() and i[22:26].strip() == resnum.strip() and i[12:16].strip() == atom_name.strip():
+            coords = i[30:54].split()
+            
+            # extract coordinates from preprocessed file
+            for p in prep_lines:
+                if p[30:54].split() == coords:
+                    new_atom_name = p[12:16].strip()
+                    new_resnum = p[22:26].strip()
+                    new_chain = p[21].strip()
+
+    before = "{}:{}:{}".format(chain, resnum, atom_name)
+    after = "{}:{}:{}".format(new_chain, new_resnum, new_atom_name) 
+
+    logger.info("Atom {} mapped to {}.".format(before, after))
+
+
+def check_atom_string(arg, initial_pdb, preprocessed_pdb, logger):
+    
+    to_check = []
+
+    # reduce the list, if necessary
+    if isinstance(arg, list):
+        for elem in arg:
+            to_check.append(elem)
+    else:
+        to_check.append(arg)
+
+    # validate atom strings
+    for j in to_check:
+        try:
+            init_coords = get_coords_from_residue(initial_pdb, j)
+            prep_coords = get_coords_from_residue(preprocessed_pdb, j)
+        except Exception as e:
+            logger.info("{} - mapping it now!".format(e))
+            map_atom_string(j, initial_pdb, preprocessed_pdb, logger)
