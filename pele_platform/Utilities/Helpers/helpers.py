@@ -205,9 +205,6 @@ def map_atom_string(atom_string, initial_pdb, prep_pdb, logger):
 
     new_atom = []
 
-    # split the atom string
-    chain, resnum, atom_name = atom_string.split(":")
-
     # read in user input
     with open(initial_pdb, "r") as initial:
         initial_lines = initial.readlines()
@@ -215,6 +212,16 @@ def map_atom_string(atom_string, initial_pdb, prep_pdb, logger):
     # read in preprocessed input
     with open(prep_pdb, "r") as prep:
         prep_lines = prep.readlines()
+
+    # split the atom string or retrieve from the number
+    if not isinstance(atom_string, int) and not atom_string.isdigit():
+        chain, resnum, atom_name = atom_string.split(":")
+    else:
+        for line in initial_lines:
+            if line[6:11].strip() == str(atom_string):
+                chain = line[21].strip() 
+                resnum = line[22:26].strip()
+                atom_name = line[12:16]
 
     # extract coordinates from user input
     for i in initial_lines:
