@@ -1,14 +1,12 @@
-import glob
 import os
 import logging
 import numpy as np
 import sys
 import warnings
-import pele_platform.Errors.custom_errors as cs
-import pele_platform.constants.constants as const
 import PPP.global_variables as gv
 from Bio.PDB import PDBParser
 import pele_platform.Errors.custom_errors as cs
+
 
 def silentremove(*args, **kwargs):
     for files in args:
@@ -17,6 +15,7 @@ def silentremove(*args, **kwargs):
                 os.remove(filename)
             except OSError:
                 pass
+
 
 def create_dir(base_dir, extension=None):
     """
@@ -40,6 +39,7 @@ def create_dir(base_dir, extension=None):
         else:
             os.makedirs(base_dir)
 
+
 class cd:
     """Context manager for changing the current working directory"""
     def __init__(self, newPath):
@@ -53,7 +53,7 @@ class cd:
         os.chdir(self.savedPath)
 
 
-def is_repited(pele_dir):
+def is_repeated(pele_dir):
 
     original_dir = None
     split_dir = pele_dir.split("_")
@@ -72,7 +72,7 @@ def is_repited(pele_dir):
         i = 1
     if os.path.isdir(pele_dir):
                 new_pele_dir = "{}_Pele_{}".format(original_dir, i)
-                new_pele_dir = is_repited(new_pele_dir)
+                new_pele_dir = is_repeated(new_pele_dir)
                 return new_pele_dir
     else:
                 return pele_dir
@@ -133,12 +133,14 @@ def retrieve_atom_info(atom, pdb):
                 pass
         sys.exit(f"Check the atoms {atom} given to calculate the distance metric.")
 
+
 def retrieve_all_waters(pdb, exclude=False):
     with open(pdb, 'r') as f:
         waters = list(set(["{}:{}".format(line[21:22], line[22:26].strip()) for line in f if line and "HOH" in line]))
     if exclude:
         waters = [water for water in waters if water not in exclude]
     return waters
+
 
 def retrieve_constraints_for_pele(constraints, pdb):
     CONSTR_ATOM_POINT = '{{ "type": "constrainAtomToPosition", "springConstant": {}, "equilibriumDistance": 0.0, "constrainThisAtom": "{}:{}:{}" }},'
@@ -158,7 +160,8 @@ def retrieve_constraints_for_pele(constraints, pdb):
             constraint =  CONSTR_ATOM_ATOM.format(spring_constant, eq_distance, chain1, residue1, atom_name1, chain2, residue2, atom_name2)
         final_constraints.append(constraint)
     return final_constraints
-        
+
+
 def retrieve_box(structure, residue_1, residue_2, weights=[0.5, 0.5]):
     # get center of interface (if PPI)
     coords1 = get_coords_from_residue(structure, residue_1)
@@ -167,6 +170,7 @@ def retrieve_box(structure, residue_1, residue_2, weights=[0.5, 0.5]):
     box_center = np.average([coords1, coords2], axis=0, weights=weights)
     box_radius = abs(np.linalg.norm(coords1-coords2))/2 + 4 #Sum 4 to give more space
     return list(box_center), box_radius
+
 
 def get_coords_from_residue(structure, original_residue):
     parser = PDBParser()
@@ -194,6 +198,7 @@ def backup_logger(logger, message):
     else:
         logger.info(message)
 
+
 def find_nonstd_residue(pdb):
     with open(pdb, "r") as f:
         resnames = list(set([line[17:20] for line in f \
@@ -202,8 +207,6 @@ def find_nonstd_residue(pdb):
 
 
 def map_atom_string(atom_string, initial_pdb, prep_pdb, logger):
-
-    new_atom = []
 
     # read in user input
     with open(initial_pdb, "r") as initial:
@@ -241,6 +244,7 @@ def map_atom_string(atom_string, initial_pdb, prep_pdb, logger):
     logger.info("Atom {} mapped to {}.".format(before, after))
 
     return after
+
 
 def check_atom_string(arg, initial_pdb, preprocessed_pdb, logger):
     
