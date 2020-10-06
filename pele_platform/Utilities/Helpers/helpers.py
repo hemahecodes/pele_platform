@@ -243,7 +243,7 @@ def map_atom_string(atom_string, initial_pdb, prep_pdb, logger):
 
     logger.info("Atom {} mapped to {}.".format(before, after))
 
-    return after
+    return before, after
 
 
 def check_atom_string(arg, initial_pdb, preprocessed_pdb, logger):
@@ -266,6 +266,7 @@ def check_atom_string(arg, initial_pdb, preprocessed_pdb, logger):
             output.append(j)
         except Exception as e:
             logger.info("{} - mapping it now!".format(e))
-            output.append(map_atom_string(j, initial_pdb, preprocessed_pdb, logger))
+            _, after = map_atom_string(j, initial_pdb, preprocessed_pdb, logger)
+            output.append(after)
 
     return output
