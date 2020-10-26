@@ -114,7 +114,10 @@
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../developers/new_index.html">Developers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../analysis/index.html">Analysis</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../developers/index.html">Developers: Add your own mode</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../errors/index.html">Common errors</a></li>
@@ -225,7 +228,7 @@ You can download the structure <a class="reference download internal" download="
 <span class="c1">#pele_licenses: /gpfs/projects/bsc72/PELE++/mniv/V1.6.1/license/ #(Example MN4 - Need it if complain about licenses)</span>
 </pre></div>
 </div>
-<p><strong>We strongly recommend running a test first to ensure all your input files are valid.</strong> Simply include <code class="docutils literal notranslate"><span class="pre">test:</span> <span class="pre">true</span></code> in your input.yaml and launch the simulation. If it finishes correctly, you can remove the test flag and start a full production run.
+<p><strong>We strongly recommend running a test first to ensure all your input files are valid.</strong> Simply include <code class="docutils literal notranslate"><span class="pre">test:</span> <span class="pre">true</span></code> in your input.yaml and launch the simulation, it will only use 5 CPUs. If it finishes correctly, you can remove the test flag and start a full production run.
 Otherwise, inspect the logs and correct any mistakes indicated in the error codes.</p>
 </div>
 <div class="section" id="launching-the-simulation">
@@ -248,11 +251,21 @@ Otherwise, inspect the logs and correct any mistakes indicated in the error code
 <span class="go">python -m pele_platform.main input.yaml</span>
 </pre></div>
 </div>
+<p>You can download ready slurm files for <a class="reference download internal" download="" href="../_downloads/e1799872b6b01a8161f3297a942b3ca7/slurm_mn.sh"><code class="xref download docutils literal notranslate"><span class="pre">MareNostrum</span></code></a> and the <a class="reference download internal" download="" href="../_downloads/51ffa2cd16e8f3ac43fd04d7826f47f0/slurm_nbd.sh"><code class="xref download docutils literal notranslate"><span class="pre">NBD</span> <span class="pre">cluster</span></code></a>.
+If you are running the simulation on the NBD cluster, you have to include <code class="docutils literal notranslate"><span class="pre">usesrun:</span> <span class="pre">true</span></code> in your input.yaml!</p>
 </div>
 <div class="section" id="analysis-of-the-results">
 <h2>4. Analysis of the results<a class="headerlink" href="#analysis-of-the-results" title="Permalink to this headline">¶</a></h2>
 <p>Inside your <code class="docutils literal notranslate"><span class="pre">LIG_Pele</span></code> directory, you will find several folders containing simulation configuration and data, raw output as well as <code class="docutils literal notranslate"><span class="pre">results</span></code> folder, which
 we will be mostly concerned with in this tutorial.</p>
+<p>If you want to understand more about the content of the <code class="docutils literal notranslate"><span class="pre">LIG_Pele</span></code> directory, you can refer to the PELE++ documentation:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference external" href="https://eapm-bsc.github.io/PELE-repo/molecularParameters.html">Data folder</a></p></li>
+<li><p><a class="reference external" href="https://eapm-bsc.github.io/PELE-repo/GeneralStructure/GeneralStructure.html">pele.conf</a></p></li>
+<li><p><a class="reference external" href="https://adaptivepele.github.io/AdaptivePELE/Examples.html#control-file-outline">adaptive.conf</a></p></li>
+</ul>
+</div></blockquote>
 <div class="section" id="a-plots">
 <h3>a. Plots<a class="headerlink" href="#a-plots" title="Permalink to this headline">¶</a></h3>
 <p>In the <code class="docutils literal notranslate"><span class="pre">LIG_Pele/results/Plots</span></code> folder you will find several plots, you can inspect them to get the general idea of the progression of the simulation.
