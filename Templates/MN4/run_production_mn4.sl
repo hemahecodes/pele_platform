@@ -6,6 +6,7 @@
 #SBATCH --time=00-01:00:00
 
 
+
 module purge
 export PELE="/gpfs/projects/bsc72/PELE++/mniv/V1.6.1-MemFix"
 export SCHRODINGER="/gpfs/projects/bsc72/SCHRODINGER_ACADEMIC"
