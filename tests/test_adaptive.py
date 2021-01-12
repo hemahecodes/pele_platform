@@ -1,4 +1,5 @@
 import os
+import re
 import glob
 import shutil
 import pele_platform.constants.constants as cs
@@ -190,9 +191,15 @@ def check_file(folder, filename, values, errors):
    filename = os.path.join(folder, filename)
    with open(filename, "r") as f:
       lines = f.readlines()
-      for value in values:
-          if value not in "".join(lines):
-              errors.append(value) 
+      s = [e.strip() for e  in "".join(lines).split(',')]
+      for value in s:
+          if value.isdigit():
+              print('value:',value, type(value))
+              if str(round(int(value),4)) not in "".join(lines):
+                  errors.append(value)
+          else:
+              if value not in "".join(lines):
+                  errors.append(value) 
    return errors
 
 def test_gpcr(args=GPCR_ARGS):
