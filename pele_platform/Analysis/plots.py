@@ -158,14 +158,8 @@ class PostProcessor:
         # Extract coords
         pool = Pool(processes=self.cpus)
         input_pool = [[p, v, self.residue, self.topology] for p, v in zip(paths, snapshots)]
-        print('input pool:', input_pool)
-        #all_coords = _extract_coords(input_pool[0])
         all_coords = pool.map(_extract_coords, input_pool)
-        print('all coords;', all_coords, type(all_coords))
         # Clusterize
-        print(all_coords[0])
-        print('---')
-        #print(all_coords[0][0], type(all_coords))
         assert len(all_coords) > 0, "Ligand not found check the option --resname. i.e python interactive.py 5 6 7 --resname LIG"
         try:
             clf = mixture.GaussianMixture(n_components=nclusts, covariance_type='full')
