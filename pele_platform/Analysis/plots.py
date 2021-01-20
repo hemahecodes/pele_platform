@@ -27,11 +27,16 @@ def _extract_coords(info):
     condition = atoms_info['resName'] == resname
     atom_numbers_ligand = atoms_info[condition].index.tolist()
     coords = []
+    print('atom_numbers_ligands:', atom_numbers_ligand)
     for atom_num in atom_numbers_ligand:
         try:
+            print('extend:', traj.xyz[0][atom_num].tolist())
             coords.extend(traj.xyz[0][atom_num].tolist())
+             
         except IndexError:
             continue
+    arr = np.array(coords).ravel() * 10
+    print('shape:',arr.shape)
     return np.array(coords).ravel() * 10
 
 
@@ -153,11 +158,15 @@ class PostProcessor:
         # Extract coords
         pool = Pool(processes=self.cpus)
         input_pool = [[p, v, self.residue, self.topology] for p, v in zip(paths, snapshots)]
+        print('input pool:', input_pool)
+        #all_coords = _extract_coords(input_pool[0])
         all_coords = pool.map(_extract_coords, input_pool)
-
+        print('all coords;', all_coords, type(all_coords))
         # Clusterize
-        assert all_coords[0][
-            0], "Ligand not found check the option --resname. i.e python interactive.py 5 6 7 --resname LIG"
+        print(all_coords[0])
+        print('---')
+        #print(all_coords[0][0], type(all_coords))
+        assert len(all_coords) > 0, "Ligand not found check the option --resname. i.e python interactive.py 5 6 7 --resname LIG"
         try:
             clf = mixture.GaussianMixture(n_components=nclusts, covariance_type='full')
             labels = clf.fit_predict(all_coords)
