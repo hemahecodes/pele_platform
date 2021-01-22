@@ -27,16 +27,13 @@ def _extract_coords(info):
     condition = atoms_info['resName'] == resname
     atom_numbers_ligand = atoms_info[condition].index.tolist()
     coords = []
-    print('atom_numbers_ligands:', atom_numbers_ligand)
     for atom_num in atom_numbers_ligand:
         try:
-            print('extend:', traj.xyz[0][atom_num].tolist())
             coords.extend(traj.xyz[0][atom_num].tolist())
              
         except IndexError:
             continue
     arr = np.array(coords).ravel() * 10
-    print('shape:',arr.shape)
     return np.array(coords).ravel() * 10
 
 
