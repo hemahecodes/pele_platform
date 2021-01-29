@@ -1,4 +1,5 @@
 import os
+import sys
 from subprocess import Popen, PIPE
 import glob
 import pele_platform.constants.constants as cs
@@ -146,7 +147,7 @@ def test_env_variable(ext_args=ENV_ARGS):
         return
     assert False
 
-@pytest.mark.skipif(sys.version_info > (3), reason="requires python version lower than python3")
+@pytest.mark.skipif(sys.version_info > (3, 0), reason="requires python version lower than python3")
 def test_python_version_error(args=ENV_ARGS):
     p = Popen("/usr/bin/python -m pele_platform.main -h".split(), stdout=PIPE, stderr=PIPE)
     output, error = p.communicate()
