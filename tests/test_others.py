@@ -146,9 +146,12 @@ def test_env_variable(ext_args=ENV_ARGS):
         return
     assert False
 
+@pytest.mark.skipif(sys.version_info > (3), reason="requires python version lower than python3")
 def test_python_version_error(args=ENV_ARGS):
     p = Popen("/usr/bin/python -m pele_platform.main -h".split(), stdout=PIPE, stderr=PIPE)
     output, error = p.communicate()
+    print('error:',error)
+    print('error decode:', error.decode())
     if "OldPythonVersion" in error.decode():
         assert True
         return
@@ -260,3 +263,4 @@ def test_SmilesConstraints_class():
     assert smarts_from_smiles == smarts_from_smarts == "[#6]-[#7]1-[#6]-[#6]-[#7H+](-[#6]-[#6]-1)-[#6]-[#6]-[#8]"
     assert matches == ((9, 0, 1, 2, 3, 4, 5, 6, 7, 8),)
     assert constraints == SMILES_CONSTR
+
