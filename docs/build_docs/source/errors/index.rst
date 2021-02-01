@@ -60,3 +60,23 @@ PELE does not allow more than 4 water molecules to be perturbed, since it result
     ValueError: Maximum 4 water molecules are allowed.
 
 This is only relevant to ``n_waters`` flag used to automatically add water molecules to the system when running AquaPELE.
+
+Ligand Atom Charges
+++++++++++++++++++++++
+
+Ligand Preparation Error - ligand
+++++++++++++++++++++++++++++++++++++
+
+This error indicates that there is a problem with the format on the PDB file of the complex, more specifically, on the coordinates of the ligand atoms. This error is related to spaced in the atom names of the ligands.
+
+.. code-block:: console
+    
+    1) Check there are no spaces in the ligand atom name and that the inputted ligand has a valid structure.
+
+To resolve the issue, delete the spaces between the atoms of the ligand in the pdb file.
+
+
+.. image:: ../img/ligand_error.png
+  :width: 500
+  :align: center
+
