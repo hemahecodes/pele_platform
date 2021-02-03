@@ -92,10 +92,6 @@ def _build_fragment_from_complex(complex, residue, ligand, ligand_core, result=0
     return fragment, old_atoms, hydrogen_core, atom_core, atom_fragment, mapping, correct
 
 
-def random_string(string_length=8):
-    letters = string.ascii_lowercase
-    return ''.join(random.choice(letters) for i in range(string_length))
-
 
 def _retrieve_fragment(fragment, old_atoms, atom_core, hydrogen_core, atom_fragment, mapping):
     from rdkit import Chem
@@ -114,9 +110,8 @@ def _retrieve_fragment(fragment, old_atoms, atom_core, hydrogen_core, atom_fragm
         print("Final atom fragment", atom_fragment_idx)
 
     # Save fragment
-    string = random_string(8)
-    fragment_filename = fragment.GetProp("_Name").replace(" ", "_") + string + ".pdb"
-
+    fragment_filename = fragment.GetProp("_Name").replace(" ", "_") + "*"
+    fragment_filename = fragment.GetProp("_Name").replace(" ", "_") + "_{0}_".format(len(glob.glob1(os.getcwd(),fragment_filename)))+ ".pdb"
     Chem.MolToPDBFile(fragment, fragment_filename)
     fragment = Chem.MolFromPDBFile(fragment_filename, removeHs=False)
     added_hydrogen = at.Atom(fragment, added_hydrogen_idx)
