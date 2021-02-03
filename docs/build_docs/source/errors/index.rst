@@ -61,9 +61,6 @@ PELE does not allow more than 4 water molecules to be perturbed, since it result
 
 This is only relevant to ``n_waters`` flag used to automatically add water molecules to the system when running AquaPELE.
 
-Ligand Atom Charges
-++++++++++++++++++++++
-
 Ligand Preparation Error - ligand
 ++++++++++++++++++++++++++++++++++++
 
@@ -79,4 +76,14 @@ To resolve the issue, delete the spaces between the atoms of the ligand in the p
 .. image:: ../img/ligand_error.png
   :width: 500
   :align: center
+
+TypeError - Unexpected keyword argument
+++++++++++++++++++++++++++++++++++++++++++
+
+When running tests, if we are running them through a conda installation of the platform, we will use the wrong version of PPP, leading to the failure. 
+To resolve the issue, run the test using the following command:
+
+.. code-block:: console
+
+    /shared/work/NBD_Utilities/PELE/PELE_Softwares/PelePlatform/depend/bin/python3.7 -m pytest test_*.py
 
