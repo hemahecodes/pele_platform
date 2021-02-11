@@ -105,8 +105,10 @@ def get_fragment_files(path, logger):
                                                                                                                                                                                         
     # convert SDF to PDB, if necessary                                                                                                                                                  
     sdf_files = [elem for elem in fragment_files if ".sdf" in elem.lower()]                                                                                                             
-    pdb_files = [elem for elem in fragment_files if ".pdb" in elem.lower()]                                                                                                             
-    all_files = pdb_files + sdf_to_pdb(sdf_files, path, logger)                                                                                                                                                                               
+    pdb_files = [elem for elem in fragment_files if ".pdb" in elem.lower()]
+    if any(File.endswith(".pdb") for File in os.listdir(".")):
+        all_files = pdb_files
+    else:                                                                                                    all_files = pdb_files + sdf_to_pdb(sdf_files, path, logger)                                                                                                                                                                               
     return all_files
 
 
