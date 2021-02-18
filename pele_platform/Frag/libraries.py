@@ -8,7 +8,7 @@ import pele_platform.Utilities.Helpers.helpers as hp
 
 OUTPUT = "input.conf"
 
-def growing_sites_symmetry(fragment, user_bond):
+def growing_sites(fragment, user_bond):
     """
     Retrieves all possible growing sites (hydrogens) on the fragment. Takes PDB fragment file as input.
     Output - list of strings represeting sites, e.g. "benzene.pdb C6-H6 C1-H2"
@@ -26,7 +26,6 @@ def growing_sites_symmetry(fragment, user_bond):
         rank[atom.GetIdx()] = list(Chem.CanonicalRankAtoms(mol,breakTies=False))[counter]
         counter += 1
     for idx, symmetryRank in rank.items():
-        
         if symmetryRank not in symmetryRankList:
             symmetryRankList.append(symmetryRank)
             symmetryList.append(idx)
@@ -40,29 +39,6 @@ def growing_sites_symmetry(fragment, user_bond):
                 bonds.append("{} {} {}-{}".format(fragment, user_bond, at_name, h_name))
     return bonds
 
-'''
-def growing_sites(fragment, user_bond):
-    """
-    Retrieves all possible growing sites (hydrogens) on the fragment. Takes PDB fragment file as input.
-    Output - list of strings represeting sites, e.g. "benzene.pdb C6-H6 C1-H2"
-    """
-    if hp.is_rdkit():
-        from rdkit import Chem
-
-    bonds = []
-    mol = Chem.MolFromPDBFile(fragment, removeHs=False)
-
-    if mol:
-        heavy_atoms = [a for a in mol.GetAtoms() if a.GetSymbol() != "H"]
-        for a in heavy_atoms:
-            hydrogens = [n for n in a.GetNeighbors() if n.GetSymbol() == "H"]
-            at_name = a.GetMonomerInfo().GetName().strip()
-            for h in hydrogens:
-                h_name = h.GetMonomerInfo().GetName().strip()
-                bonds.append("{} {} {}-{}".format(fragment, user_bond, at_name, h_name))
-
-    return bonds
-'''
 
 def sdf_to_pdb(file_list, path, logger):
 
@@ -160,7 +136,7 @@ def main(user_bond, frag_library, logger):
     # get all possible growing sites
     bond_list = []
     for file in all_files:
-        bond_list.extend(growing_sites_symmetry(file, user_bond))
+        bond_list.extend(growing_sites(file, user_bond))
     
     # write input.conf 
     write_config_file(OUTPUT, bond_list)
