@@ -25,24 +25,19 @@ def growing_sites_symmetry(fragment, user_bond):
     for atom in mol.GetAtoms():
         rank[atom.GetIdx()] = list(Chem.CanonicalRankAtoms(mol,breakTies=False))[counter]
         counter += 1
-    for symmetryRank, idx in rank.items():
-        print(symmetryRank, idx)
+    for idx, symmetryRank in rank.items():
+        
         if symmetryRank not in symmetryRankList:
             symmetryRankList.append(symmetryRank)
             symmetryList.append(idx)
-    print(symmetryList)
-    print(symmetryRankList)
-    sys.exit()
-    #rank = list(Chem.CanonicalRankAtoms(mol, breakTies=False))
     if mol:
         heavy_atoms = [a for a in mol.GetAtoms() if a.GetSymbol() != "H"]
         for a in heavy_atoms:
-            hydrogens = [n for n in a.GetNeighbors() if n.GetSymbol() == "H"]
+            hydrogens = [n for n in a.GetNeighbors() if n.GetSymbol() == "H" and n.GetIdx() in symmetryList]
             at_name = a.GetMonomerInfo().GetName().strip()
             for h in hydrogens:
                 h_name = h.GetMonomerInfo().GetName().strip()
                 bonds.append("{} {} {}-{}".format(fragment, user_bond, at_name, h_name))
-
     return bonds
 
 '''
