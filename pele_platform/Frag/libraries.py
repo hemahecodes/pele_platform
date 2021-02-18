@@ -70,7 +70,10 @@ def growing_sites(fragment, user_bond):
         from rdkit import Chem
 
     bonds = []
-    mol = Chem.MolFromPDBFile(fragment, removeHs=False)
+    
+    #fragment_pdb= Chem.PDBWriter(fragment.name)
+        
+    mol = Chem.MolFromPDBFile(fragment.name, removeHs=False)
     
     if mol:
         heavy_atoms = [a for a in mol.GetAtoms() if a.GetSymbol() != "H"]
@@ -80,12 +83,9 @@ def growing_sites(fragment, user_bond):
             for h in hydrogens:
                 h_name = h.GetMonomerInfo().GetName().strip()
                 bonds.append("{} {} {}-{}".format(fragment, user_bond, at_name, h_name))
-
+    
     return bonds
 
-
-def temp_opener(name, flag, mode=0o777):
-    return os.open(name, os.O_TEMPORARY, mode)
 
 def sdf_to_pdb(file_list, path, logger):
 
@@ -105,10 +105,10 @@ def sdf_to_pdb(file_list, path, logger):
             fout_path = os.path.join(os.path.dirname(f), fout)
             try:
                 command_mae = command_mae.format(schrodinger_path, f, fout_path)
-                fp = tempfile.TemporaryFile()
+                #fp = tempfile.TemporaryFile()
                 #subprocess.Popen(command_mae.split(), stdout=fp, stderr=subprocess.STDOUT)
                 subprocess.call(command_mae.split())
-                converted_mae.append(fp)
+                converted_mae.append(fout_path)
             except Exception as e:
                 logger.info("Error occured while converting SD files to mae.", e)
          
@@ -124,13 +124,12 @@ def sdf_to_pdb(file_list, path, logger):
                 logger.info("Error occured while converting mae to PDB.", e)
             
         pdb_pattern = os.path.splitext(converted_mae[0])
-        converted_pdb = glob.glob(pdb_pattern[0]+"*"+".pdb")
-        sys.exit()        
+        converted_pdb = glob.glob(pdb_pattern[0]+"*"+".pdb")        
         # ~~~ If it's stupid but it works (?), it isn't stupid. ~~~
         
         # read in PDB file created by Schrodinger, substitute residue name and add chain ID
         out = []
-        fp = tempfile.TemporaryFile()
+        fp = tempfile.NamedTemporaryFile(delete=False, suffix='.pdb')
         for c in converted_pdb:
             with open(c, "r") as fin:
                 lines = fin.readlines()
@@ -142,13 +141,16 @@ def sdf_to_pdb(file_list, path, logger):
             new_lines = [l.replace("UNK", "GRW") for l in new_lines if "UNK" in l]
             new_lines = [l[:21]+"L"+l[22:] for l in new_lines]
 
-            with open(c, "w") as fout:
+            with open(c, "r+") as fout:
                 for line in new_lines:
                     fout.write(line)
                 for line in fout.readlines():
                     fp.write(line.encode()) 
             out.append(fp)
             os.remove(c)
+        #out[0].seek(0)
+        #print(out[0].read())
+        #sys.exit()
         #out =  converted_pdb
     return out
 
@@ -192,8 +194,10 @@ def main(user_bond, frag_library, logger):
     # get all possible growing sites
     bond_list = []
     for file in all_files:
+        
         bond_list.extend(growing_sites(file, user_bond))
     
     # write input.conf 
     write_config_file(OUTPUT, bond_list)
+    
     return OUTPUT
