@@ -8,6 +8,23 @@ import pele_platform.Utilities.Helpers.helpers as hp
 
 OUTPUT = "input.conf"
 
+def getSymmetryGroups(mol):
+    """
+    Computes the symmetry class for each atom and returns a list with the idx of non-symmetric atoms.
+    """
+    rank = {}
+    symmetryList=[]
+    symmetryRankList=[]
+    counter=0
+    for atom in mol.GetAtoms():
+        rank[atom.GetIdx()] = list(Chem.CanonicalRankAtoms(mol,breakTies=False))
+        counter += 1
+    for idx, symmetryRank in rank.items():
+        if symmetryRank not in symmetryRankList:
+            symmetryRankList.append(symmetryRank)
+            symmetryList.append(idx)
+    return symmetryList
+
 def growing_sites(fragment, user_bond):
     """
     Retrieves all possible growing sites (hydrogens) on the fragment. Takes PDB fragment file as input.
@@ -18,17 +35,8 @@ def growing_sites(fragment, user_bond):
 
     bonds = []
     rank = {}
-    symmetryList=[]
-    symmetryRankList=[]
     mol = Chem.MolFromPDBFile(fragment, removeHs=False)
-    counter = 0
-    for atom in mol.GetAtoms():
-        rank[atom.GetIdx()] = list(Chem.CanonicalRankAtoms(mol,breakTies=False))[counter]
-        counter += 1
-    for idx, symmetryRank in rank.items():
-        if symmetryRank not in symmetryRankList:
-            symmetryRankList.append(symmetryRank)
-            symmetryList.append(idx)
+    symmetryList = getSymmetryGroups(mol)
     if mol:
         heavy_atoms = [a for a in mol.GetAtoms() if a.GetSymbol() != "H"]
         for a in heavy_atoms:
