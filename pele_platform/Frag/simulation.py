@@ -24,18 +24,19 @@ class FragRunner(mn.FragParameters):
         self._analysis()
 
     def _launch(self):
-        if self.ligands:  # Full ligands as sdf
-            fragment_files = self._prepare_input_file(logger=self.logger)
-        elif self.frag_library:
-            self.input = lb.main(self.frag_core_atom, self.frag_library, self.logger)
-        else:
-            fragment_files = None
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            if self.ligands:  # Full ligands as sdf
+                fragment_files = self._prepare_input_file(logger=self.logger)
+            elif self.frag_library:
+                self.input = lb.main(self.frag_core_atom, self.frag_library, self.logger, tmpdirname)
+            else:
+                fragment_files = None
         
-        if not self.only_analysis:
-            self._run()
+            if not self.only_analysis:
+                self._run()
         
-        if self.cleanup and fragment_files:
-            self._clean_up(fragment_files)
+            if self.cleanup and fragment_files:
+                self._clean_up(fragment_files)
 
     def _prepare_control_file(self):
         # Create tmp folder with frag control_file 
@@ -65,6 +66,18 @@ class FragRunner(mn.FragParameters):
 
     def _run(self):
         if self.frag_run:
+            print(self.core_process, self.input, self.gr_steps, self.criteria, self.plop_path, self.spython,
+                          self.pele_exec, self.control_file, self.license, self.output_folder,
+                          self.report_name, "trajectory", self.cluster_folder, self.cpus, self.distcont, self.threshold,
+                          self.epsilon, self.condition, self.metricweights,
+                          self.nclusters, self.frag_eq_steps, self.frag_restart, self.min_overlap, self.max_overlap,
+                          self.chain_core, self.frag_chain, self.frag_steps, self.temperature, self.seed, self.gridres,
+                          self.banned, self.limit, self.mae,
+                          self.rename, self.threshold_clash, self.steering, self.translation_high, self.rotation_high,
+                          self.translation_low, self.rotation_low, self.explorative, self.frag_radius,
+                          self.sampling_control, self.pele_data, self.pele_documents,
+                          self.only_prepare, self.only_grow, self.no_check, self.debug, self.usesrun)
+            
             try:
                 frag.main(self.core_process, self.input, self.gr_steps, self.criteria, self.plop_path, self.spython,
                           self.pele_exec, self.control_file, self.license, self.output_folder,
