@@ -17,7 +17,7 @@ def getSymmetryGroups(mol):
     symmetryRankList=[]
     counter=0
     for atom in mol.GetAtoms():
-        rank[atom.GetIdx()] = list(Chem.CanonicalRankAtoms(mol,breakTies=False))
+        rank[atom.GetIdx()] = list(Chem.CanonicalRankAtoms(mol,breakTies=False))[counter]
         counter += 1
     for idx, symmetryRank in rank.items():
         if symmetryRank not in symmetryRankList:
@@ -49,7 +49,6 @@ def growing_sites(fragment, user_bond):
 
 
 def sdf_to_pdb(file_list, path, logger):
-
     out = []
 
     if file_list:
