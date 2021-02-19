@@ -86,7 +86,11 @@ def normalize_lists(distList, beList):
     return (distList, beList)
 
 
+<<<<<<< HEAD
 def main(refFile='', path="", atomCoords='',resname="GRW", pattern=''):
+=======
+def main(refFile='', path="", atomCoords='', resname="GRW", pattern=''):
+>>>>>>> parent of 8bdd7b3... Refactored analysis.py
     if atomCoords == '':
         atomCoords = getAtomFromRef(refFile).get_coord()
     pathSearch = os.path.join(path, "*{}*".format(os.path.splitext(pattern)[0]))
