@@ -180,5 +180,6 @@ VALID_FLAGS_PLATFORM = {"system": "system",
 "constraint_level": "constraint_level",
 "terminal_constr": "terminal_constr",
 "saturated_mutagenesis": "saturated_mutagenesis",
-"cpus_per_mutation": "cpus_per_mutation"}
+"cpus_per_mutation": "cpus_per_mutation",
+"frag_core_atom": "frag_core_atom"}
 
