@@ -2,6 +2,7 @@ import glob
 import os
 import subprocess
 import shutil
+import os.path
 
 from rdkit import Chem
 from pele_platform.constants import constants as cs
@@ -189,7 +190,7 @@ def get_fragment_files(path,
                 List of paths of the fragments in the fragment library.
     """
     fragment_files = []                                                                                                                                                                 
-    extensions = ['*.pdb', '*.sdf']                                                                                                                                                     
+    extensions = ['*.pdb', '*.sdf']                                                                                                                                                  
     
     for e in extensions:                                                                                                                                                                
         fragment_files.extend(glob.glob(os.path.join(path, e.upper())))                                                                                                                 
@@ -203,18 +204,23 @@ def get_fragment_files(path,
 
 
 def write_config_file(output_name,
-                      bond_list):
+                      bond_list, frag_restart, frag_core):
     """
     Generates the configuration file.
     """
-
+    if frag_restart:
+        for i in bond_list:
+            print(i)
+            name= os.getcwd() + "/"+ frag_core[:-4]+"_processed_"+ i.split("/")[6].split(" ")[0].replace(".pdb","") + i.split("/")[6].split(" ")[1].replace(" ","") + i.split("/")[6].split(" ")[2].replace(" ","")  + "/" + "top_result.pdb"
+            if os.path.isfile(name):
+                bond_list.remove(i)
     with open(output_name, "w+") as conf_file:
         for line in bond_list:
             conf_file.write(line+"\n")
 
 
-def main(user_bond,
-         frag_library, logger, tmpdirname):
+def main(frag_core, user_bond,
+         frag_library, logger, frag_restart, tmpdirname):
     # find the library and extract fragments
     path = get_library(frag_library)
     all_files = get_fragment_files(path, logger, tmpdirname) 
@@ -225,6 +231,6 @@ def main(user_bond,
         bond_list.extend(growing_sites(file, user_bond))
     
     # write input.conf 
-    write_config_file(OUTPUT, bond_list)
+    write_config_file(OUTPUT, bond_list, frag_restart, frag_core)
     
     return OUTPUT
