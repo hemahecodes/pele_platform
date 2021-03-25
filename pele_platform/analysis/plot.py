@@ -73,10 +73,7 @@ class Plotter(object):
         """
         from pele_platform.Utilities.Helpers.helpers import backup_logger
 
-<<<<<<< HEAD
         # Initialize a data handler from the current dataframe
-=======
->>>>>>> Partial test fix
         data_handler = DataHandler.from_dataframe(self._dataframe)
 
         # Ensure that output_folder exists

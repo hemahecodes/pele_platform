@@ -276,6 +276,17 @@ Algorithm to automatically set metal constraints around the ligand.
     constrain_core_spring: 30  # optional, default 50.0
 
 
+Core constraints
++++++++++++++++++++++
+
+You can constrain the core of your ligand by specifying either SMILES or SMARTS pattern using ``constrain_core`` flag.
+The default spring constant is 50 but you can choose your own.
+
+..  code-block:: yaml
+
+    constrain_core: "CN(C)C(=O)c1ccc(F)cc1"  # SMILES or SMARTS pattern
+    constrain_core_spring: 30  # optional, default 50.0
+
 WaterPerturbation
 ======================
 

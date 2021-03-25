@@ -53,7 +53,6 @@ class YamlParser(object):
     def _get_value_from_env(self):
         self.usesrun = bool(os.environ.get("SRUN", self.usesrun))
 
-
     def _check(self) -> None:
         # Check if valids in yaml file are valids
         for key in self.data.keys():
