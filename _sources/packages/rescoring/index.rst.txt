@@ -44,7 +44,7 @@ Prepare the input file ``input.yml``:
     cpus: 60
     rescoring: true # only relaxation part of the algorithm
 
-For more optional flags please refer to `optative flags <../../documentation/index.html>`_
+For more optional flags please refer to `optional flags <../../flags/index.html>`_
 
 3. Run simulation
 ====================
@@ -75,4 +75,4 @@ Ranked cluster representatives can be found in:
 
 In addition, top 100 structures with the best binding energy (or metric of your choice) are retrieved. This is done to ensure the clustering algorithm did not skip any valuable results. They are stored in:
 
-``working_folder/results/BestStructs``
+``working_folder/results/top_poses``

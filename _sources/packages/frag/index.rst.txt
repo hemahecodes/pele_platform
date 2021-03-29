@@ -1,4 +1,4 @@
-Prepare your own Fragment Growing
+Fragment growing simulation
 ######################################
 
 FragPELE is a new tool for in silico hit-to-lead drug design, capable of performing HT-fragment growing onto a scaffold while
@@ -57,7 +57,7 @@ Prepare the input file ``input.yml``:
     chain_core: "L" # Ligand scaffold chain ID
     cpus: 48
 
-For more optional flags please refer to `optative falgs <../../documentation/index.html>`_
+For more optional flags please refer to `optional flags <../../flags/index.html>`_
 
 
 3. Run simulation
@@ -86,5 +86,3 @@ can be found in:
 Each fragment folder contains a top_results folder with PDB files corresponding to the best poses for that fragment:
 
 ``fragment_folder/top_results/``
-
-

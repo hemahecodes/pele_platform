@@ -1,4 +1,4 @@
-Refine docking poses by accounting for receptor flexibility
+Docking pose refinement
 #####################################################################
 
 The induced fit simulation aims to enhance docking poses by taking into account the
@@ -48,7 +48,7 @@ Prepare the input file ``input.yml``:
     induced_fit_fast: true # less sampling but faster (2-3 h)
     #induced_fit_exhaustive: true # 6h simulation but a lot more sampling
 
-For more optional flags please refer to `optative flags <../../documentation/index.html>`_
+For more optional flags please refer to `optional flags <../../flags/index.html>`_
 
 3. Run simulation
 ====================
@@ -79,4 +79,4 @@ Ranked cluster representatives can be found in:
 
 In addition, top 100 structures with the best binding energy (or metric of your choice) are retrieved. This is done to ensure the clustering algorithm did not skip any valuable results. They are stored in:
 
-``working_folder/results/BestStructs``
+``working_folder/results/top_poses``

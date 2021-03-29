@@ -36,8 +36,9 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Developers" href="../developers/index.html" />
-    <link rel="prev" title="Fragment growing tutorial" href="../tutorials/frag_pele.html" /> 
+    <link rel="copyright" title="Copyright" href="../copyright.html" />
+    <link rel="next" title="Tutorials" href="../tutorials/index.html" />
+    <link rel="prev" title="FragPELE parameters" href="../flags/frag/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -90,27 +91,44 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../packages/index.html">Prepare your own simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../packages/index.html">Run simulation</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../documentation/index.html">Optative flags</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../flags/index.html">Optional flags</a></li>
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Analysis</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#output-folders">Output folders</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#interactive-plots">Interactive plots</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#kernel-density-estimate-plot">Kernel density estimate plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#output-files">Output files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#folder-structure">Folder structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#detailed-metrics">Detailed metrics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#plots">Plots</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#interactive-plots">Interactive plots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#kernel-density-estimate-plot">Kernel density estimate plot</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#clusters">Clusters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#api">API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#class-analysis">class Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#generate">generate()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#generate-clusters">generate_clusters()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#generate-plots">generate_plots()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#generate-top-poses">generate_top_poses()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#generate-report">generate_report()</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../developers/index.html">Developers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../errors/index.html">Common errors</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../developers/index.html">Developers</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../changelog/index.html">Versions</a></li>
@@ -181,8 +199,10 @@
             
   <div class="section" id="analysis">
 <h1>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="output-folders">
-<h2>Output folders<a class="headerlink" href="#output-folders" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="output-files">
+<h2>Output files<a class="headerlink" href="#output-files" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="folder-structure">
+<h3>Folder structure<a class="headerlink" href="#folder-structure" title="Permalink to this headline">¶</a></h3>
 <p>Each simulation will create a number of output folders, as indicated on the tree below.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">.</span>
 <span class="go">└── LIG_Pele</span>
@@ -198,13 +218,26 @@
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">top_poses</span></code> - top 100 lowest binding energy structures</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">plots</span></code> - plots of multiple metrics selected by the user</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">clusters</span></code> - lowest binding energy cluster representatives.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">clusters</span></code> - lowest binding energy cluster representatives and clustering plots.</p></li>
 </ul>
 </div>
+<div class="section" id="detailed-metrics">
+<h3>Detailed metrics<a class="headerlink" href="#detailed-metrics" title="Permalink to this headline">¶</a></h3>
+<p>Additionally, the simulation will create a two CSV files with more detailed metrics:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">results/data.csv</span></code> contains a summary of all created poses together with their metrics and the clusters they belong to</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">results/clusters/info.csv</span></code> provides detailed metric on each cluster, such as its population, mean RMSD, energy percentiles, etc.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="plots">
+<h2>Plots<a class="headerlink" href="#plots" title="Permalink to this headline">¶</a></h2>
+<p>The software will automatically create scatter plots for all metrics, however, if you want to enhance your analysis, you
+can check out our interactive and KDE plots.</p>
 <div class="section" id="interactive-plots">
-<h2>Interactive plots<a class="headerlink" href="#interactive-plots" title="Permalink to this headline">¶</a></h2>
-<p>Additionally, you can create your own interactive plots. Go to the <code class="docutils literal notranslate"><span class="pre">output</span></code> folder and run the following command:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python -m pele_platform.Analysis.interactive_plot 6 5</span>
+<h3>Interactive plots<a class="headerlink" href="#interactive-plots" title="Permalink to this headline">¶</a></h3>
+<p>You can also create your own interactive plots. Simply go to the <code class="docutils literal notranslate"><span class="pre">output</span></code> folder and run the following command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python -m pele_platform.analysis.interactive_plot 6 5</span>
 </pre></div>
 </div>
 <p>The script requires two integer arguments indicating the numbers of report columns you would like to plot, in this
@@ -213,7 +246,7 @@ case we used columns 5 and 6 corresponding to the binding energy and SASA of the
 <p>For more advanced interactive plots, please refer to <a class="reference external" href="https://nostrumbiodiscovery.github.io/pele_docs/intro/GeneralAnalysis/GeneralAnalysis.html">PELE++ documentation</a>.</p>
 </div>
 <div class="section" id="kernel-density-estimate-plot">
-<h2>Kernel density estimate plot<a class="headerlink" href="#kernel-density-estimate-plot" title="Permalink to this headline">¶</a></h2>
+<h3>Kernel density estimate plot<a class="headerlink" href="#kernel-density-estimate-plot" title="Permalink to this headline">¶</a></h3>
 <p>The KDE plots can aid the simulation analysis by visualising the distribution of ligand poses (similarly to a histogram)
 in respect to plotted metrics, such as distance between two atoms (atom_dist) or solvent exposed surface area (SASA).
 All you have to do is include the <code class="docutils literal notranslate"><span class="pre">kde:</span> <span class="pre">true</span></code> flag in your input.yaml. Additionally, you can influence the number of
@@ -226,6 +259,158 @@ poses plotted using the <code class="docutils literal notranslate"><span class="
 <a class="reference internal image-reference" href="../_images/kde.png"><img alt="../_images/kde.png" class="align-center" src="../_images/kde.png" style="width: 400px;" /></a>
 </div>
 </div>
+<div class="section" id="clusters">
+<h2>Clusters<a class="headerlink" href="#clusters" title="Permalink to this headline">¶</a></h2>
+<p>Once the ligand clustering is finished, this folder will contain PDB files with the representatives of each selected cluster
+(marked with a letter) as well as a CSV summary of metrics for all clusters, not only the selected one.</p>
+<p>For each metrics there’s a box plot to provide the user with a quick, intuitive overview of the clusters.</p>
+<a class="reference internal image-reference" href="../_images/clusters_boxplot.png"><img alt="../_images/clusters_boxplot.png" class="align-center" src="../_images/clusters_boxplot.png" style="width: 400px;" /></a>
+<p>Moreover, the overall simulation metrics coloured by cluster are plotted to easily compare the performance of each cluster
+throughout the simulation.</p>
+<a class="reference internal image-reference" href="../_images/cluster_scatter.png"><img alt="../_images/cluster_scatter.png" class="align-center" src="../_images/cluster_scatter.png" style="width: 400px;" /></a>
+</div>
+<div class="section" id="api">
+<h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
+<p>We included an option to run analysis as API for those of our users, who are familiar with Python. All you have to do is
+initialize the Analysis class with the three mandatory parameters (resname, chain and simulation_output) and any optional
+you might want to include.</p>
+<div class="section" id="class-analysis">
+<h3>class Analysis<a class="headerlink" href="#class-analysis" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>resname<span class="classifier">str (mandatory)</span></dt><dd><p>Residue name of the ligand, e.g. “LIG”</p>
+</dd>
+<dt>chain<span class="classifier">str (mandatory)</span></dt><dd><p>Chain ID of the ligand, e.g. “Z.”</p>
+</dd>
+<dt>simulation_output<span class="classifier">str (mandatory)</span></dt><dd><p>Path to the output folder of the simulation, e.g. “LIG_Pele/output”</p>
+</dd>
+<dt>be_column<span class="classifier">int (optional, default = 4)</span></dt><dd><p>Report column with energy metric.</p>
+</dd>
+<dt>limit_column<span class="classifier">int (optional, default = None)</span></dt><dd><p>Integer specifying the first column from which the meaningful metrics start, e.g. SASA or RMSD.</p>
+</dd>
+<dt>traj<span class="classifier">str (optional, default = “tarjectory.pdb”)</span></dt><dd><p>Trajectory name defaults to “trajectory.pdb”, but you should use “trajectory.xtc” if using XTC format.</p>
+</dd>
+<dt>report<span class="classifier">str (optional, default = “report”)</span></dt><dd><p>Report file name, if not using default.</p>
+</dd>
+<dt>skip_initial_structures<span class="classifier">bool (optional, default = False)</span></dt><dd><p>Skips initial structures (step 0 of the simulation). Should be set to False when running test
+with only one step.</p>
+</dd>
+<dt>kde<span class="classifier">bool (optional, default = False)</span></dt><dd><p>Set to True to create kernel density estimator plots.</p>
+</dd>
+<dt>kde_structs<span class="classifier">int (optional, default = 1000)</span></dt><dd><p>Maximum number of structures to consider for the KDE plot.</p>
+</dd>
+<dt>topology<span class="classifier">str (optional, default = None)</span></dt><dd><p>Path to the topology file, if using XTC trajectories.</p>
+</dd>
+<dt>cpus: int (optional, default = 1)</dt><dd><p>Number of CPUs to use.</p>
+</dd>
+</dl>
+</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">analysis</span> <span class="o">=</span> <span class="n">Analysis</span><span class="p">(</span>
+       <span class="n">resname</span><span class="o">=</span><span class="s2">&quot;LIG&quot;</span><span class="p">,</span>
+       <span class="n">chain</span><span class="o">=</span><span class="s2">&quot;Z&quot;</span><span class="p">,</span>
+       <span class="n">simulation_output</span><span class="o">=</span><span class="s2">&quot;LIG_Pele/output&quot;</span><span class="p">,</span>
+   <span class="p">)</span>
+</pre></div>
+</div>
+<p>Then you can use one of the available methods to generate top poses, perform clustering or run the whole analysis workflow, e.g.</p>
+</div>
+<div class="section" id="generate">
+<h3>generate()<a class="headerlink" href="#generate" title="Permalink to this headline">¶</a></h3>
+<p>Runs the full analysis workflow (plots, top poses and clusters) and saves the results in the supplied path.</p>
+<blockquote>
+<div><dl class="simple">
+<dt>path<span class="classifier">str</span></dt><dd><p>The path where the analysis results will be saved</p>
+</dd>
+<dt>clustering_type<span class="classifier">str (optional, default = ‘meanshift’)</span></dt><dd><p>The clustering method that will be used to generate the clusters. One of [‘gaussianmixture’, ‘meanshift’, ‘hdbscan’].</p>
+</dd>
+<dt>bandwidth<span class="classifier">float (optional, default = 2.5)</span></dt><dd><p>Bandwidth for the mean shift and HDBSCAN clustering.</p>
+</dd>
+<dt>analysis_nclust<span class="classifier">int (optional, default = 10)</span></dt><dd><p>Number of clusters to create when using the Gaussian mixture model.</p>
+</dd>
+<dt>max_top_clusters<span class="classifier">int (optional, default = 8)</span></dt><dd><p>Maximum number of clusters to return.</p>
+</dd>
+<dt>min_population<span class="classifier">float (optional, default = 0.01)</span></dt><dd><p>The minimum amount of structures in a cluster, takes a value between 0 and 1, where 0.01 refers to 1% of all structures.</p>
+</dd>
+</dl>
+</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">analysis</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s2">&quot;my_folder&quot;</span><span class="p">,</span> <span class="n">clustering_type</span><span class="o">=</span><span class="s2">&quot;gaussianmixture&quot;</span><span class="p">,</span> <span class="n">analysis_nclust</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="generate-clusters">
+<h3>generate_clusters()<a class="headerlink" href="#generate-clusters" title="Permalink to this headline">¶</a></h3>
+<p>Performs clustering of the output poses based on ligand heavy atom coordinates using a user-defined method.</p>
+<blockquote>
+<div><dl class="simple">
+<dt>path<span class="classifier">str (mandatory)</span></dt><dd><p>The path where the clusters will be saved.</p>
+</dd>
+<dt>clustering_type<span class="classifier">str (mandatory)</span></dt><dd><p>The clustering method that will be used to generate the clusters, choose one from [‘gaussianmixture’, ‘meanshift’, ‘hdbscan’].</p>
+</dd>
+<dt>bandwidth<span class="classifier">float (optional, default = 2.5)</span></dt><dd><p>Bandwidth for the mean shift and HDBSCAN clustering (also called epsilon).</p>
+</dd>
+<dt>analysis_nclust<span class="classifier">int (optional, default = 10)</span></dt><dd><p>Number of clusters to create when using the Gaussian mixture model.</p>
+</dd>
+<dt>max_top_clusters<span class="classifier">int (optional, default = 8)</span></dt><dd><p>Maximum number of clusters to return. If a large number of clusters is created, only a specific subset with the best metrics is returned.</p>
+</dd>
+<dt>min_population<span class="classifier">float (optional, default = 0.01)</span></dt><dd><p>The minimum amount of structures in a cluster, takes a value between 0 and 1, where 0.01 refers to 1%.</p>
+</dd>
+</dl>
+</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">analysis</span><span class="o">.</span><span class="n">generate_clusters</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s2">&quot;my_clusters&quot;</span><span class="p">,</span> <span class="n">clustering_type</span><span class="o">=</span><span class="s2">&quot;gaussianmixture&quot;</span><span class="p">,</span> <span class="n">analysis_nclust</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="generate-plots">
+<h3>generate_plots()<a class="headerlink" href="#generate-plots" title="Permalink to this headline">¶</a></h3>
+<p>Generates scatter plots for all metrics versus binding energy and total energy.</p>
+<blockquote>
+<div><dl class="simple">
+<dt>path<span class="classifier">str (mandatory)</span></dt><dd><p>The path where the plots will be saved.</p>
+</dd>
+</dl>
+</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">analysis</span><span class="o">.</span><span class="n">generate_plots</span><span class="p">(</span><span class="s2">&quot;my_plots_folder&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="generate-top-poses">
+<h3>generate_top_poses()<a class="headerlink" href="#generate-top-poses" title="Permalink to this headline">¶</a></h3>
+<p>Retrieves the best binding energy poses and saves them in the PDB format, returns a list of metrics associated with each pose.</p>
+<blockquote>
+<div><dl class="simple">
+<dt>path<span class="classifier">str (mandatory)</span></dt><dd><p>The path where the top poses will be saved.</p>
+</dd>
+<dt>n_poses<span class="classifier">int (optional, default = 100)</span></dt><dd><p>The number of top poses to retrieve.</p>
+</dd>
+</dl>
+</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">best_metrics</span> <span class="o">=</span> <span class="n">analysis</span><span class="o">.</span><span class="n">generate_top_poses</span><span class="p">(</span><span class="s2">&quot;my_working_folder&quot;</span><span class="p">,</span> <span class="n">n_poses</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="generate-report">
+<h3>generate_report()<a class="headerlink" href="#generate-report" title="Permalink to this headline">¶</a></h3>
+<p>It generates the final simulation report as a PDF file.</p>
+<blockquote>
+<div><dl class="simple">
+<dt>plots_path<span class="classifier">str (mandatory)</span></dt><dd><p>The path where the plots are saved.</p>
+</dd>
+<dt>poses_path<span class="classifier">str (mandatory)</span></dt><dd><p>The path where the top poses are saved.</p>
+</dd>
+<dt>clusters_path<span class="classifier">str (mandatory)</span></dt><dd><p>The path where the clusters are saved.</p>
+</dd>
+<dt>best_metrics<span class="classifier">list[float] (mandatory)</span></dt><dd><p>The list that contains the metrics belonging to the extracted best poses, extracted by generate_top_poses method.</p>
+</dd>
+<dt>filename<span class="classifier">str (mandatory)</span></dt><dd><p>The filename for the simulation report.</p>
+</dd>
+</dl>
+</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">analysis</span><span class="o">.</span><span class="n">generate_report</span><span class="p">(</span><span class="s2">&quot;my_plots_folder&quot;</span><span class="p">,</span> <span class="s2">&quot;my_working_folder&quot;</span><span class="p">,</span> <span class="s2">&quot;my_clusters&quot;</span><span class="p">,</span> <span class="n">best_metrics</span><span class="p">,</span> <span class="s2">&quot;report.pdf&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
 
 
            </div>
@@ -235,10 +420,10 @@ poses plotted using the <code class="docutils literal notranslate"><span class="
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../developers/index.html" class="btn btn-neutral float-right" title="Developers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../tutorials/index.html" class="btn btn-neutral float-right" title="Tutorials" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../tutorials/frag_pele.html" class="btn btn-neutral float-left" title="Fragment growing tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../flags/frag/index.html" class="btn btn-neutral float-left" title="FragPELE parameters" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -248,7 +433,8 @@ poses plotted using the <code class="docutils literal notranslate"><span class="
   <div role="contentinfo">
     <p>
         
-        &copy; Copyright 2021, NBD | Nostrum Biodiscovery
+        
+        &copy; <a href="../copyright.html">Copyright</a> 2021, NBD | Nostrum Biodiscovery
 
     </p>
   </div>
