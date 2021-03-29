@@ -40,7 +40,8 @@ class FragRunner(object):
             if params.ligands:  # Full ligands as sdf
                 fragment_files = self._prepare_input_file(logger=params.logger)
             elif params.frag_library:
-                params.input = lb.main(params.frag_core_atom,
+                params.input = lb.main(params.core,
+                                       params.frag_core_atom,
                                        params.frag_library,
                                        params.logger,
                                        tmpdirname)
@@ -218,29 +219,32 @@ class FragRunner(object):
                                self.parameters.frag_core_atom + '*')
 
         for sim_directory in sim_directories:
-            simulation_output = os.path.join(sim_directory, 'sampling_result')
-            analysis_folder = os.path.join(sim_directory, "results")
+            try:
+                simulation_output = os.path.join(sim_directory, 'sampling_result')
+                analysis_folder = os.path.join(sim_directory, "results")
+          
+                analysis = Analysis(resname='GRW',
+                                    chain=self.parameters.chain,
+                                    simulation_output=simulation_output,
+                                    be_column=self.parameters.be_column,
+                                    limit_column=self.parameters.limit_column,
+                                    traj=self.parameters.traj_name,
+                                    report=self.parameters.report_name,
+                                    skip_initial_structures=not self.parameters.test,
+                                    kde=self.parameters.kde,
+                                    kde_structs=self.parameters.kde_structs,
+                                    topology=self.parameters.topology,
+                                    cpus=self.parameters.cpus)
 
-            analysis = Analysis(resname='GRW',
-                                chain=self.parameters.chain,
-                                simulation_output=simulation_output,
-                                be_column=self.parameters.be_column,
-                                limit_column=self.parameters.limit_column,
-                                traj=self.parameters.traj_name,
-                                report=self.parameters.report_name,
-                                skip_initial_structures=not self.parameters.test,
-                                kde=self.parameters.kde,
-                                kde_structs=self.parameters.kde_structs,
-                                topology=self.parameters.topology,
-                                cpus=self.parameters.cpus)
-
-            analysis.generate(
-                analysis_folder,
-                clustering_type=self.parameters.clustering_method.lower(),
-                bandwidth=self.parameters.bandwidth,
-                analysis_nclust=self.parameters.analysis_nclust,
-                max_top_clusters=self.parameters.max_top_clusters,
-                min_population=self.parameters.min_population)
+                analysis.generate(
+                    analysis_folder,
+                    clustering_type=self.parameters.clustering_method.lower(),
+                    bandwidth=self.parameters.bandwidth,
+                    analysis_nclust=self.parameters.analysis_nclust,
+                    max_top_clusters=self.parameters.max_top_clusters,
+                    min_population=self.parameters.min_population)
+            except:
+                continue
 
     def _clean_up(self, fragment_files):
         for file in fragment_files:

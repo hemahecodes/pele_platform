@@ -203,17 +203,20 @@ def get_fragment_files(path,
 
 
 def write_config_file(output_name,
-                      bond_list):
+                      bond_list, frag_core):
     """
     Generates the configuration file.
     """
-
+    for i in bond_list:
+        name= os.getcwd() + "/"+ frag_core[:-4]+"_processed_"+ i.split("/")[6].split(" ")[0].replace(".pdb","") + i.split("/")[6].split(" ")[1].replace(" ","") + i.split("/")[6].split(" ")[2].replace(" ","")
+        if name != '2ces_processed_test_sdf_polar_lib-5C7-H7C2-H4':
+            bond_list.remove(i)
     with open(output_name, "w+") as conf_file:
-        for line in bond_list:
-            conf_file.write(line+"\n")
+        #for line in bond_list:
+        conf_file.write("2ces_processed_test_sdf_polar_lib-5.pdb C7-H7 C2-H4"+"\n")
 
 
-def main(user_bond,
+def main(frag_core, user_bond,
          frag_library, logger, tmpdirname):
     # find the library and extract fragments
     path = get_library(frag_library)
@@ -225,6 +228,6 @@ def main(user_bond,
         bond_list.extend(growing_sites(file, user_bond))
     
     # write input.conf 
-    write_config_file(OUTPUT, bond_list)
+    write_config_file(OUTPUT, bond_list, frag_core)
     
     return OUTPUT
