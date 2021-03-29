@@ -203,7 +203,7 @@ def get_fragment_files(path,
 
 
 def write_config_file(output_name,
-                      bond_list, frag_core):
+                      bond_list, frag_core, tmpdirname):
     """
     Generates the configuration file.
     """
@@ -213,7 +213,7 @@ def write_config_file(output_name,
             bond_list.remove(i)
     with open(output_name, "w+") as conf_file:
         #for line in bond_list:
-        conf_file.write("2ces_processed_test_sdf_polar_lib-5.pdb C7-H7 C2-H4"+"\n")
+        conf_file.write(tmpdirname + "/test_sdf_polar_lib-5.pdb C7-H7 C2-H4"+"\n")
 
 
 def main(frag_core, user_bond,
@@ -228,6 +228,6 @@ def main(frag_core, user_bond,
         bond_list.extend(growing_sites(file, user_bond))
     
     # write input.conf 
-    write_config_file(OUTPUT, bond_list, frag_core)
+    write_config_file(OUTPUT, bond_list, frag_core, tmpdirname)
     
     return OUTPUT
