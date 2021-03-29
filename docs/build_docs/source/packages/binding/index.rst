@@ -1,4 +1,4 @@
-Prepare your own binding simulation
+Binding simulation
 ####################################
 
 This simulation aims to find the binding path of a small molecule to a given receptor.
@@ -42,7 +42,7 @@ Prepare the input file ``input.yml``:
 **Note:** PELE will automatically place the ligand around the specified initial site, and will use
 the final_site to build the simulation box. Then simulation will start.
 
-For more optional flags please refer to `optional flags <../../documentation/index.html>`_
+For more optional flags please refer to `optional flags <../../flags/index.html>`_
 
 
 3. Run simulation
@@ -74,4 +74,4 @@ Ranked cluster representatives can be found in:
 
 In addition, top 100 structures with the best binding energy (or metric of your choice) are retrieved. This is done to ensure the clustering algorithm did not skip any valuable results. They are stored in:
 
-``working_folder/results/BestStructs``
+``working_folder/results/top_poses``
